@@ -1,6 +1,7 @@
 package com.anthonytlei.demo.student;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -16,4 +17,13 @@ public class StudentService {
     public List<Student> getStudents() {
         return studentRepository.findAll();
     }
+
+    public void createStudent(Student student) {
+        Optional<Student> studentOptional = studentRepository.findByEmail(student.getEmail());
+        if (studentOptional.isPresent()) {
+            throw new IllegalStateException("Email taken");
+        }
+        studentRepository.save(student);
+    }
+
 }
